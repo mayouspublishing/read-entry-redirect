@@ -3,6 +3,7 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
+    // Handle just /read or /read/ as a redirect page
     if (path === "/read" || path === "/read/") {
       const html = `
         <!DOCTYPE html>
@@ -11,7 +12,7 @@ export default {
             <meta charset="UTF-8">
             <title>Redirecting...</title>
             <script>
-              // ✅ Make sure the path is under /read/
+              console.log("📘 REDIRECT page loaded");
               if (sessionStorage.getItem("loggedIn") === "true") {
                 window.location.href = "/read/books.html";
               } else {
@@ -29,9 +30,11 @@ export default {
       });
     }
 
-    // ✅ Proxy everything else under /read/ to mayous-library.pages.dev
-const cleanedPath = path.startsWith("/read") ? path.slice(5) : path;
-const proxyUrl = "https://mayous-library.pages.dev" + cleanedPath + url.search;
+    // ✅ This safely strips ONLY the first "/read"
+    const cleanedPath = path.startsWith("/read") ? path.slice(5) : path; // remove "/read"
+    const proxyUrl = "https://mayous-library.pages.dev" + cleanedPath + url.search;
+
     return fetch(proxyUrl, request);
   }
 }
+
