@@ -30,7 +30,8 @@ export default {
     }
 
     // ✅ Proxy everything else under /read/ to mayous-library.pages.dev
-    const proxyUrl = "https://mayous-library.pages.dev" + path.replace("/read", "") + url.search;
+const cleanedPath = path.startsWith("/read") ? path.slice(5) : path;
+const proxyUrl = "https://mayous-library.pages.dev" + cleanedPath + url.search;
     return fetch(proxyUrl, request);
   }
 }
