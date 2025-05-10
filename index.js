@@ -3,7 +3,7 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Handle /read or /read/ only
+    // Handle direct /read or /read/ redirect
     if (path === "/read" || path === "/read/") {
       const html = `
         <!DOCTYPE html>
@@ -29,12 +29,17 @@ export default {
       });
     }
 
-    // ✅ Redirect any /read/* to base path (strip only the "/read" prefix once)
-    const proxyPath = path.replace(/^\/read/, "") || "/";
-    const proxyUrl = "https://mayous-library.pages.dev" + proxyPath + url.search;
+    // Strip only the first `/read`
+    const cleanedPath = path.startsWith("/read") ? path.slice(5) : path;
+
+    // If it's a folder path, default to index.html
+    const normalizedPath = cleanedPath.endsWith("/") || cleanedPath === ""
+      ? cleanedPath + "index.html"
+      : cleanedPath;
+
+    const proxyUrl = "https://mayous-library.pages.dev" + normalizedPath + url.search;
 
     return fetch(proxyUrl, request);
   }
 }
-
 
