@@ -1,9 +1,16 @@
 name = "read-entry-redirect"
-account_id = "d6a1f43dd0b2d4efd5e301baa532fe30"
-compatibility_date = "2024-05-10"
 main = "index.js"
-workers_dev = false  # ✅ Required to disable *.workers.dev and use route
+compatibility_date = "2024-05-10"
+
+account_id = "d6a1f43dd0b2d4efd5e301baa532fe30"
+workers_dev = false
 
 routes = [
-  { pattern = "www.mayous.org/read", custom_domain = true }
+  # For www subdomain
+  { pattern = "www.mayous.org/read", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "www.mayous.org/read/*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+
+  # For root domain (no www)
+  { pattern = "mayous.org/read", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "mayous.org/read/*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" }
 ]
