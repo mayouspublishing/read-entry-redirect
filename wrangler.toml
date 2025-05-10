@@ -1,0 +1,10 @@
+name = "read-entry-redirect"
+type = "javascript"
+compatibility_date = "2024-05-10"
+
+account_id = "d6a1f43dd0b2d4efd5e301baa532fe30"
+zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862"
+
+routes = [
+  { pattern = "www.mayous.org/read", custom_domain = true }
+]
