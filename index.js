@@ -13,9 +13,9 @@ export default {
             <title>Redirecting...</title>
             <script>
               if (sessionStorage.getItem("loggedIn") === "true") {
-                window.location.href = "/read/books.html";
+                window.location.href = "/read/books";
               } else {
-                window.location.href = "/read/login.html";
+                window.location.href = "/read/login";
               }
             </script>
           </head>
