@@ -3,14 +3,17 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // If path is exactly /read or /read/, proxy to books.html directly
-    if (path === "/read" || path === "/read/") {
-      return fetch("https://mayous-library.pages.dev/books.html");
-    }
+    // ✅ Clean path by stripping `/read` prefix
+    const strippedPath = path.replace(/^\/read/, "") || "/";
+    
+    // ✅ Default to index.html if path is empty or ends with /
+    const finalPath = strippedPath.endsWith("/") ? strippedPath + "index.html" : strippedPath;
 
-    // Otherwise, strip /read prefix and forward
-    const targetPath = path.replace(/^\/read/, "") || "/";
-    const proxyUrl = "https://mayous-library.pages.dev" + targetPath + url.search;
+    // ✅ Build proxy URL to Cloudflare Pages
+    const proxyUrl = "https://mayous-library.pages.dev" + finalPath + url.search;
+
+    // ✅ Fetch and return response from Pages
     return fetch(proxyUrl, request);
   }
 }
+
