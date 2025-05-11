@@ -1,29 +1,57 @@
-export default {
+xport default {
   async fetch(request) {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Directly map known auth routes
-    if (path === "/read/signup") {
-      return fetch("https://mayous-library.pages.dev/signup.html");
-    }
-    if (path === "/read/login") {
-      return fetch("https://mayous-library.pages.dev/login.html");
-    }
-    if (path === "/read/confirm") {
-      return fetch("https://mayous-library.pages.dev/confirm.html");
-    }
-
-    // Serve root (library) at /read or /read/
+    // Serve redirect logic page for /read or /read/
+    // Handle direct /read or /read/ redirect
     if (path === "/read" || path === "/read/") {
-      return fetch("https://mayous-library.pages.dev/");
+      return new Response(`
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>Redirecting...</title>
+            <script>
+              const loggedIn = localStorage.getItem("loggedIn") === "true";
+              window.location.href = loggedIn ? "/read/books" : "/read/login";
+              if (sessionStorage.getItem("loggedIn") === "true") {
+                window.location.href = "/read/books.html";
+                window.location.href = "/read/books";
+              } else {
+                window.location.href = "/read/login.html";
+                window.location.href = "/read/login";
+              }
+            </script>
+          </head>
+          <body>
+            <p>Redirecting...</p>
+            <p>Redirecting to your library...</p>
+          </body>
+        </html>
+      `, {
+      `;
+      return new Response(html, {
+        headers: { "Content-Type": "text/html" }
+      });
     }
 
-    // Proxy everything else
-    const targetPath = path.replace(/^\/read/, "") || "/";
-    const proxyUrl = "https://mayous-library.pages.dev" + targetPath + url.search;
+    // Remove /read prefix and default to index.html for folder paths
+    const proxyPath = path.replace(/^\/read/, "") || "/";
+    const finalPath = proxyPath.endsWith("/") ? proxyPath + "index.html" : proxyPath;
+    const proxyUrl = "https://mayous-library.pages.dev" + finalPath + url.search;
+    // Strip only the first `/read`
+    const cleanedPath = path.startsWith("/read") ? path.slice(5) : path;
+
+    // If it's a folder path, default to index.html
+    const normalizedPath = cleanedPath.endsWith("/") || cleanedPath === ""
+      ? cleanedPath + "index.html"
+      : cleanedPath;
+
+    const proxyUrl = "https://mayous-library.pages.dev" + normalizedPath + url.search;
+
     return fetch(proxyUrl, request);
   }
 }
-
 
