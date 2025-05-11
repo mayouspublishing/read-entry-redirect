@@ -3,7 +3,7 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Handle direct /read or /read/ redirect
+    // ✅ Handle /read or /read/ with redirect logic
     if (path === "/read" || path === "/read/") {
       const html = `
         <!DOCTYPE html>
@@ -12,7 +12,7 @@ export default {
             <meta charset="UTF-8">
             <title>Redirecting...</title>
             <script>
-              if (sessionStorage.getItem("loggedIn") === "true") {
+              if (localStorage.getItem("loggedIn") === "true") {
                 window.location.href = "/read/books";
               } else {
                 window.location.href = "/read/login";
@@ -29,28 +29,11 @@ export default {
       });
     }
 
-    // Strip only the first `/read`
-    const cleanedPath = path.startsWith("/read") ? path.slice(5) : path;
-
-    // If it's a folder path, default to index.html
-    const normalizedPath = cleanedPath.endsWith("/") || cleanedPath === ""
-      ? cleanedPath + "index.html"
-      : cleanedPath;
-    // ✅ Only serve content under /read/*
-    if (path.startsWith("/read")) {
-      // Normalize the path
-      let cleanedPath = path.slice("/read".length);
-      if (cleanedPath === "" || cleanedPath === "/") {
-        cleanedPath = "/index.html"; // Serve main library page
-      }
-
-    const proxyUrl = "https://mayous-library.pages.dev" + normalizedPath + url.search;
-      const proxyUrl = "https://mayous-library.pages.dev" + cleanedPath + url.search;
-      return fetch(proxyUrl, request);
-    }
+    // ✅ Proxy /read/* to https://mayous-library.pages.dev/*
+    const cleanedPath = path.replace(/^\/read/, "") || "/";
+    const finalPath = cleanedPath.endsWith("/") ? cleanedPath + "index.html" : cleanedPath;
+    const proxyUrl = "https://mayous-library.pages.dev" + finalPath + url.search;
 
     return fetch(proxyUrl, request);
-    // ❌ Everything else = 404
-    return new Response("Not Found", { status: 404 });
   }
 }
