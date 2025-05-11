@@ -3,15 +3,14 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Serve /read or /read/ as /books
+    // ✅ Explicitly handle /read and /read/ by forwarding to /read/books
     if (path === "/read" || path === "/read/") {
-      const proxyUrl = "https://mayous-library.pages.dev/books";
-      return fetch(proxyUrl, request);
+      return Response.redirect(`${url.origin}/read/books`, 302);
     }
 
-    // Proxy any other /read/* path to Cloudflare Pages
-    const proxyPath = path.replace(/^\/read/, "") || "/";
-    const proxyUrl = "https://mayous-library.pages.dev" + proxyPath + url.search;
+    // ✅ Strip only the first "/read" from path
+    const cleanedPath = path.replace(/^\/read/, "") || "/";
+    const proxyUrl = "https://mayous-library.pages.dev" + cleanedPath + url.search;
 
     return fetch(proxyUrl, request);
   }
