@@ -3,7 +3,7 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // ✅ Handle /read or /read/ with redirect logic
+    // Serve a redirect page for exactly /read or /read/
     if (path === "/read" || path === "/read/") {
       const html = `
         <!DOCTYPE html>
@@ -29,7 +29,7 @@ export default {
       });
     }
 
-    // ✅ Proxy /read/* to https://mayous-library.pages.dev/*
+    // Proxy all other /read/* requests
     const cleanedPath = path.replace(/^\/read/, "") || "/";
     const finalPath = cleanedPath.endsWith("/") ? cleanedPath + "index.html" : cleanedPath;
     const proxyUrl = "https://mayous-library.pages.dev" + finalPath + url.search;
