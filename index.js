@@ -1,12 +1,18 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+    const path = url.pathname;
 
-    // Serve root of Pages site for any /read or /read/* path
-    if (url.pathname.startsWith("/read")) {
+    // 🔁 Serve the root of your Pages site for /read or /read/
+    if (path === "/read" || path === "/read/") {
       return fetch("https://mayous-library.pages.dev/");
     }
 
-    return new Response("Not found", { status: 404 });
+    // 🔁 Proxy anything under /read/* to mayous-library.pages.dev/*
+    const targetPath = path.replace(/^\/read/, "") || "/";
+    const proxyUrl = "https://mayous-library.pages.dev" + targetPath + url.search;
+
+    return fetch(proxyUrl, request);
   }
 }
+
