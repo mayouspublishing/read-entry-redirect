@@ -3,15 +3,20 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // ✅ Only serve content under /read/*
-    if (path.startsWith("/read")) {
-      // Normalize the path
-      let cleanedPath = path.slice("/read".length);
-      if (cleanedPath === "" || cleanedPath === "/") {
-        cleanedPath = "/index.html"; // Serve main library page
-      }
+    // ✅ Match /read or /read/
+    if (path === "/read" || path === "/read/") {
+      const proxyUrl = "https://mayous-library.pages.dev/index.html";
+      return fetch(proxyUrl, request);
+    }
 
-      const proxyUrl = "https://mayous-library.pages.dev" + cleanedPath + url.search;
+    // ✅ Match all other /read/* routes
+    if (path.startsWith("/read/")) {
+      const cleanedPath = path.replace(/^\/read/, ""); // remove only first /read
+      const normalizedPath = cleanedPath.endsWith("/") || cleanedPath === ""
+        ? cleanedPath + "index.html"
+        : cleanedPath;
+
+      const proxyUrl = "https://mayous-library.pages.dev" + normalizedPath + url.search;
       return fetch(proxyUrl, request);
     }
 
