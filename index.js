@@ -1,14 +1,14 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
-    let path = url.pathname;
+    const path = url.pathname;
 
-    // If path is exactly "/read" or "/read/", proxy to root of Pages site
+    // If path is exactly /read or /read/, proxy to books.html directly
     if (path === "/read" || path === "/read/") {
-      return fetch("https://mayous-library.pages.dev/");
+      return fetch("https://mayous-library.pages.dev/books.html");
     }
 
-    // Otherwise, strip "/read" and forward to the matching file
+    // Otherwise, strip /read prefix and forward
     const targetPath = path.replace(/^\/read/, "") || "/";
     const proxyUrl = "https://mayous-library.pages.dev" + targetPath + url.search;
     return fetch(proxyUrl, request);
