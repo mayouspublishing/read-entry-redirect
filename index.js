@@ -1,33 +1,32 @@
 export default {
   async fetch(request) {
     const url = new URL(request.url);
-    const path = url.pathname;
+    const pathname = url.pathname;
 
     const ORIGIN = "https://mayous-library.pages.dev";
 
-    let targetPath = "";
+    let targetPath = null;
 
-    switch (path) {
-      case "/read":
-        targetPath = "/books";
-        break;
-      case "/login":
-      case "/signup":
-      case "/confirm":
-        targetPath = path;
-        break;
-      default:
-        return new Response("Not found", { status: 404 });
+    if (pathname.startsWith("/read")) {
+      targetPath = "/read";
+    } else if (pathname.startsWith("/login")) {
+      targetPath = "/login";
+    } else if (pathname.startsWith("/signup")) {
+      targetPath = "/signup";
+    } else if (pathname.startsWith("/confirm")) {
+      targetPath = "/confirm";
     }
 
-    const proxiedUrl = `${ORIGIN}${targetPath}`;
+    if (targetPath) {
+      const fullUrl = `${ORIGIN}${targetPath}${url.search}`;
+      return fetch(fullUrl, {
+        method: request.method,
+        headers: request.headers,
+        body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
+        redirect: "follow"
+      });
+    }
 
-    return fetch(proxiedUrl, {
-      method: request.method,
-      headers: request.headers,
-      body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
-      redirect: "follow"
-    });
+    return new Response("Not Found", { status: 404 });
   }
-};
-
+}
