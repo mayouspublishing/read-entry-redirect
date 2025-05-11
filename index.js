@@ -3,15 +3,17 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // Directly proxy /read or /read/ to the root of Pages
+    // ✅ Proxy /read or /read/ to root of Pages
     if (path === "/read" || path === "/read/") {
-      return fetch("https://mayous-library.pages.dev/");
+      const proxyUrl = "https://mayous-library.pages.dev/" + url.search;
+      return fetch(proxyUrl, request);
     }
 
-    // Otherwise, strip /read and forward the rest
+    // ✅ Proxy all other /read/* paths by stripping the /read prefix
     const targetPath = path.replace(/^\/read/, "") || "/";
     const proxyUrl = "https://mayous-library.pages.dev" + targetPath + url.search;
 
     return fetch(proxyUrl, request);
   }
 }
+
