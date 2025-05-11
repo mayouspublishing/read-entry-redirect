@@ -2,12 +2,11 @@ export default {
   async fetch(request) {
     const url = new URL(request.url);
 
-    // Serve index.html for any /read or /read/* request
+    // Serve root of Pages site for any /read or /read/* path
     if (url.pathname.startsWith("/read")) {
-      return fetch("https://mayous-library.pages.dev/index.html");
+      return fetch("https://mayous-library.pages.dev/");
     }
 
-    // For anything else, you can return 404 or proxy elsewhere
     return new Response("Not found", { status: 404 });
   }
 }
