@@ -5,6 +5,16 @@ export default {
 
     const ORIGIN = "https://mayous-library.pages.dev";
 
+ // 🔁 SPECIAL CASE: Handle confirmation token
+    if (pathname === "/confirm" && url.searchParams.has("token")) {
+      const token = url.searchParams.get("token");
+      const appsScriptUrl = `https://script.google.com/macros/s/AKfycbyGsMvizzRXKaExglDi8a9W3jJvEAJOFlPy9XGxFkwL3Q5Hyhg2jPlJ9j3wLTXSZJs6fg/exec?confirm=${encodeURIComponent(token)}`;
+      return fetch(appsScriptUrl, {
+        method: "GET",
+        redirect: "follow"
+      });
+    }
+    
     let targetPath = null;
 
     if (pathname.startsWith("/read")) {
