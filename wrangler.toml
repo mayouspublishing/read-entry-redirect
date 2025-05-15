@@ -4,16 +4,16 @@ compatibility_date = "2024-05-11"
 zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862"
 
 routes = [
-  { pattern = "mayous.org/read", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
-  { pattern = "www.mayous.org/read", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "mayous.org/read*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "www.mayous.org/read*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
   
-  { pattern = "mayous.org/login", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
-  { pattern = "www.mayous.org/login", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "mayous.org/login*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "www.mayous.org/login*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
   
-  { pattern = "mayous.org/signup", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
-  { pattern = "www.mayous.org/signup", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "mayous.org/signup*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "www.mayous.org/signup*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
   
-  { pattern = "mayous.org/confirm", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
-  { pattern = "www.mayous.org/confirm", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" }
+  { pattern = "mayous.org/confirm*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "www.mayous.org/confirm*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" }
 ]
 
