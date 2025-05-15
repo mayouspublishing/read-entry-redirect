@@ -68,7 +68,7 @@ if (pathname === "/confirm" && url.search.includes("token=")) {
       </body>
     </html>
   `, {
-    headers: { "Content-Type": "text/html" },
+    headers: { "Content-Type": "text/html; charset=UTF-8" },
     status: 200
   });
 }
