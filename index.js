@@ -76,15 +76,18 @@ if (pathname === "/confirm" && url.search.includes("token=")) {
     
     let targetPath = null;
 
-    if (pathname.startsWith("/read")) {
-      targetPath = "/read";
-    } else if (pathname.startsWith("/login")) {
-      targetPath = "/login";
-    } else if (pathname.startsWith("/signup")) {
-      targetPath = "/signup";
-    } else if (pathname.startsWith("/confirm")) {
-      targetPath = "/confirm";
-    }
+if (pathname.startsWith("/read")) {
+  targetPath = "/read";
+} else if (pathname.startsWith("/login")) {
+  targetPath = "/login";
+} else if (pathname.startsWith("/signup")) {
+  targetPath = "/signup";
+} else if (pathname.startsWith("/confirm")) {
+  targetPath = "/confirm";
+} else if (pathname.startsWith("/reset")) {
+  targetPath = "/reset";
+}
+
 
     if (targetPath) {
       const fullUrl = `${ORIGIN}${targetPath}${url.search}`;
