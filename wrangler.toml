@@ -12,6 +12,9 @@ routes = [
   
   { pattern = "mayous.org/signup*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
   { pattern = "www.mayous.org/signup*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+
+    { pattern = "mayous.org/reset*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
+  { pattern = "www.mayous.org/reset*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
   
   { pattern = "mayous.org/confirm*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" },
   { pattern = "www.mayous.org/confirm*", zone_id = "e08ad294b9b7b4afdde5a0bf16a0e862" }
